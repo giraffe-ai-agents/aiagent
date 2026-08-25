@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Администратор для стоматологий — Сколько денег вы теряете на пропущенных звонках?</title>
+  <meta name="description" content="Узнайте, сколько прибыли приносит AI-администратор вашей стоматологии. Отвечает на звонки 24/7, записывает пациентов, не болеет, не увольняется." />
+
+  <!-- Open Graph for Instagram -->
+  <meta property="og:title" content="Сколько денег теряет ваша стоматология на пропущенных звонках?" />
+  <meta property="og:description" content="AI-администратор отвечает 24/7, записывает пациентов и не просит зарплату. Рассчитайте выгоду за 30 секунд." />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon (Inline SVG) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='14' fill='%2307080b' stroke='%2300f0ff' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%2300f0ff'/%3E%3C/svg%3E" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --bg-core: #07080b;
+      --bg-surface: #0e1017;
+      --bg-surface-elevated: #141722;
+      --bg-card: rgba(18, 21, 30, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-medium: rgba(255, 255, 255, 0.14);
+      --border-active: rgba(0, 240, 255, 0.5);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-cyan: #00f0ff;
+      --accent-cyan-glow: rgba(0, 240, 255, 0.18);
+      --accent-cyan-dim: rgba(0, 240, 255, 0.08);
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --shadow-cyan: 0 0 30px rgba(0, 240, 255, 0.2);
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-core);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 4vw, 2.5rem);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 8, 11, 0.85);
+    }
+    .header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .brand svg { width: 40px; height: 40px; }
+    .brand-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+    }
+    .brand-badge {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--accent-cyan-dim);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      color: var(--accent-cyan);
+    }
+    .header-cta {
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .header-cta:hover { opacity: 0.8; }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: clamp(3rem, 8vw, 5rem) 0 clamp(2rem, 5vw, 3rem);
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      color: var(--accent-rose);
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+    .hero-badge .pulse {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent-rose);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.4); }
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 5vw, 3.1rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .hero .gradient-text {
+      background: linear-gradient(135deg, var(--accent-cyan), #38bdf8, #6366f1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--text-secondary);
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* ===== PAIN POINTS ===== */
+    .pain-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+    @media (max-width: 600px) {
+      .pain-points { grid-template-columns: 1fr; }
+    }
+    .pain-card {
+      padding: 1.25rem;
+      background: rgba(244, 63, 94, 0.05);
+      border: 1px solid rgba(244, 63, 94, 0.15);
+      border-radius: var(--radius-lg);
+      text-align: center;
+    }
+    .pain-card .pain-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    .pain-card .pain-stat {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent-rose);
+    }
+    .pain-card .pain-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      line-height: 1.4;
+    }
+
+    /* ===== CALCULATOR ===== */
+    .calculator-section {
+      padding: clamp(2rem, 5vw, 4rem) 0 clamp(3rem, 8vw, 6rem);
+    }
+    .section-label {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .section-label h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .section-label p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .calc-grid { grid-template-columns: 1fr; }
+    }
+
+    .calc-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: clamp(1.5rem, 3vw, 2.25rem);
+      backdrop-filter: blur(12px);
+    }
+    .calc-panel-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .calc-panel-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group { margin-bottom: 1.4rem; }
+    .form-group:last-child { margin-bottom: 0; }
+    .form-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    .label-value {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--accent-cyan);
+      font-size: 1rem;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--bg-surface-elevated);
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      border: 3px solid var(--bg-core);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+    input[type="range"]::-moz-range-thumb {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      border: 3px solid var(--bg-core);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+      cursor: pointer;
+    }
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.35rem;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== RESULTS ===== */
+    .results-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-active);
+      border-radius: var(--radius-xl);
+      padding: clamp(1.5rem, 3vw, 2.25rem);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-cyan);
+      position: sticky;
+      top: 90px;
+    }
+    .results-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .results-title svg { width: 22px; height: 22px; color: var(--accent-cyan); }
+    .results-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .result-row:last-of-type { border-bottom: none; }
+    .result-label {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .result-label .icon { width: 15px; height: 15px; flex-shrink: 0; }
+    .result-value {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .result-value.positive { color: var(--accent-emerald); }
+    .result-value.negative { color: var(--accent-rose); }
+    .result-value.neutral { color: var(--accent-cyan); }
+    .result-value.amber { color: var(--accent-amber); }
+
+    /* Loss block */
+    .loss-block {
+      margin-top: 1.25rem;
+      padding: 1.25rem;
+      background: rgba(244, 63, 94, 0.07);
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      border-radius: var(--radius-lg);
+      text-align: center;
+    }
+    .loss-label {
+      font-size: 0.75rem;
+      color: var(--accent-rose);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.25rem;
+    }
+    .loss-amount {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 800;
+      color: var(--accent-rose);
+    }
+    .loss-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    /* Profit block */
+    .profit-block {
+      margin-top: 1rem;
+      padding: 1.25rem;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(0, 240, 255, 0.04));
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius-lg);
+      text-align: center;
+    }
+    .profit-label {
+      font-size: 0.75rem;
+      color: var(--accent-emerald);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.25rem;
+    }
+    .profit-amount {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-weight: 800;
+      color: var(--accent-emerald);
+    }
+    .profit-sub {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 0.15rem;
+    }
+    .roi-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .disclaimer {
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    /* ===== COMPARISON ===== */
+    .comparison-section {
+      padding-bottom: clamp(3rem, 8vw, 5rem);
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .comparison-table thead th {
+      font-family: var(--font-display);
+      font-weight: 700;
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 2px solid var(--border-medium);
+    }
+    .comparison-table thead th:first-child { color: var(--text-muted); }
+    .comparison-table thead th:nth-child(2) { color: var(--text-secondary); }
+    .comparison-table thead th:nth-child(3) { color: var(--accent-cyan); }
+    .comparison-table tbody td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+    .comparison-table tbody td:nth-child(3) { color: var(--accent-emerald); font-weight: 600; }
+    .comparison-table tbody tr:last-child td { border-bottom: none; }
+
+    @media (max-width: 600px) {
+      .comparison-table { font-size: 0.78rem; }
+      .comparison-table thead th,
+      .comparison-table tbody td { padding: 0.6rem 0.5rem; }
+    }
+
+    .comparison-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: clamp(1rem, 2vw, 1.5rem);
+      overflow-x: auto;
+    }
+
+    /* ===== CTA ===== */
+    .cta-section { padding: 0 0 clamp(3rem, 8vw, 5rem); }
+    .cta-card {
+      text-align: center;
+      padding: clamp(2rem, 5vw, 3rem);
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.06), rgba(99, 102, 241, 0.06));
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: var(--radius-xl);
+    }
+    .cta-card h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .cta-card > p {
+      color: var(--text-secondary);
+      margin-bottom: 1.75rem;
+      max-width: 500px;
+      margin-inline: auto;
+      font-size: 0.95rem;
+    }
+    .cta-btn {
+      padding: 0.85rem 2rem;
+      background: var(--accent-cyan);
+      color: #07080b;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+    .cta-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+    }
+    .cta-note {
+      margin-top: 1rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+    }
+    .footer p { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { animation: fadeInUp 0.6s ease-out forwards; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container">
+      <a href="#" class="brand">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="6" width="52" height="52" rx="14" stroke="currentColor" stroke-width="2.5" stroke-dasharray="4 2" opacity="0.6"/>
+          <rect x="17" y="17" width="30" height="30" rx="4" transform="rotate(45 32 32)" stroke="var(--accent-cyan)" stroke-width="2" fill="none"/>
+          <circle cx="32" cy="32" r="8" fill="var(--accent-cyan)"/>
+          <circle cx="32" cy="32" r="3" fill="var(--bg-core)"/>
+        </svg>
+        <span class="brand-name">AI АДМИНИСТРАТОР</span>
+        <span class="brand-badge">24/7</span>
+      </a>
+      <a href="#cta" class="header-cta">Подключить демо →</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge animate-in">
+        <span class="pulse"></span>
+        Прямо сейчас ваша клиника теряет деньги
+      </div>
+      <h1 class="animate-in delay-1">
+        Сколько прибыли приносит<br>
+        <span class="gradient-text">AI-администратор</span> стоматологии?
+      </h1>
+      <p class="animate-in delay-2">
+        Пропущенный звонок = потерянный пациент. AI отвечает на каждый звонок 24/7, 
+        записывает на приём и не просит зарплату. Рассчитайте выгоду за 30 секунд.
+      </p>
+
+      <!-- Pain points -->
+      <div class="pain-points animate-in delay-3">
+        <div class="pain-card">
+          <div class="pain-icon">📵</div>
+          <div class="pain-stat">37%</div>
+          <div class="pain-desc">звонков пропускает средняя клиника в нерабочее время</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">💸</div>
+          <div class="pain-stat">8 из 10</div>
+          <div class="pain-desc">пациентов не перезванивают, если не дозвонились с первого раза</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">🤖</div>
+          <div class="pain-stat">24/7</div>
+          <div class="pain-desc">AI-администратор на связи — без обедов, больничных и отпусков</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section class="calculator-section">
+    <div class="container">
+      <div class="section-label">
+        <h2>📊 Рассчитайте выгоду для вашей клиники</h2>
+        <p>Двигайте ползунки — результат обновится мгновенно</p>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Input Panel -->
+        <div class="calc-panel">
+          <div class="calc-panel-title">Параметры вашей клиники</div>
+          <div class="calc-panel-subtitle">Укажите текущие показатели</div>
+
+          <!-- Входящих звонков в день -->
+          <div class="form-group">
+            <label>
+              Входящих звонков в день
+              <span class="label-value" id="calls-value">20</span>
+            </label>
+            <input type="range" id="calls" min="5" max="100" value="20" step="1" />
+            <div class="range-labels"><span>5</span><span>100</span></div>
+          </div>
+
+          <!-- % пропущенных -->
+          <div class="form-group">
+            <label>
+              Пропущенных звонков
+              <span class="label-value" id="missed-value">30%</span>
+            </label>
+            <input type="range" id="missed" min="5" max="60" value="30" step="1" />
+            <div class="range-labels"><span>5%</span><span>60%</span></div>
+          </div>
+
+          <!-- Конверсия звонок → визит -->
+          <div class="form-group">
+            <label>
+              Конверсия звонок → запись
+              <span class="label-value" id="conversion-value">40%</span>
+            </label>
+            <input type="range" id="conversion" min="10" max="80" value="40" step="5" />
+            <div class="range-labels"><span>10%</span><span>80%</span></div>
+          </div>
+
+          <!-- Средний чек -->
+          <div class="form-group">
+            <label>
+              Средний чек пациента, ₽
+              <span class="label-value" id="avgcheck-value">8 000</span>
+            </label>
+            <input type="range" id="avgcheck" min="2000" max="50000" value="8000" step="500" />
+            <div class="range-labels"><span>2 000 ₽</span><span>50 000 ₽</span></div>
+          </div>
+
+          <!-- Зарплата администратора -->
+          <div class="form-group">
+            <label>
+              Зарплата администратора, ₽/мес
+              <span class="label-value" id="salary-value">45 000</span>
+            </label>
+            <input type="range" id="salary" min="20000" max="120000" value="45000" step="5000" />
+            <div class="range-labels"><span>20 000 ₽</span><span>120 000 ₽</span></div>
+          </div>
+
+          <!-- Рабочих дней -->
+          <div class="form-group">
+            <label>
+              Рабочих дней в месяце
+              <span class="label-value" id="workdays-value">26</span>
+            </label>
+            <input type="range" id="workdays" min="20" max="30" value="26" step="1" />
+            <div class="range-labels"><span>20</span><span>30</span></div>
+          </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="results-panel">
+          <div class="results-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Результат расчёта
+          </div>
+          <div class="results-subtitle">Что даёт AI-администратор вашей клинике</div>
+
+          <div class="result-row">
+            <span class="result-label">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Пропущенных звонков / мес
+            </span>
+            <span class="result-value negative" id="res-missed">156</span>
+          </div>
+
+          <div class="result-row">
+            <span class="result-label">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Потерянных записей / мес
+            </span>
+            <span class="result-value negative" id="res-lost-appointments">62</span>
+          </div>
+
+          <!-- Loss block -->
+          <div class="loss-block">
+            <div class="loss-label">🔥 Вы теряете каждый месяц</div>
+            <div class="loss-amount" id="res-loss">−499 200 ₽</div>
+            <div class="loss-sub" id="res-loss-year">−5 990 400 ₽ в год</div>
+          </div>
+
+          <div style="border-top: 1px solid var(--border-subtle); margin-top: 1.25rem; padding-top: 1.25rem;">
+            <div class="results-subtitle" style="margin-bottom: 0.75rem; color: var(--accent-emerald);">✅ С AI-администратором</div>
+
+            <div class="result-row">
+              <span class="result-label">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                AI обработает звонков / мес
+              </span>
+              <span class="result-value positive" id="res-ai-calls">156</span>
+            </div>
+
+            <div class="result-row">
+              <span class="result-label">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Доп. записей на приём / мес
+              </span>
+              <span class="result-value positive" id="res-ai-appointments">62</span>
+            </div>
+
+            <div class="result-row">
+              <span class="result-label">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Экономия на зарплате
+              </span>
+              <span class="result-value amber" id="res-salary-save">45 000 ₽</span>
+            </div>
+          </div>
+
+          <!-- Profit block -->
+          <div class="profit-block">
+            <div class="profit-label">💰 AI-администратор принесёт</div>
+            <div class="profit-amount" id="res-profit">+544 200 ₽</div>
+            <div class="profit-sub">дополнительно в месяц</div>
+            <div class="roi-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 18 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              <span id="res-profit-year">+6 530 400 ₽ / год</span>
+            </div>
+          </div>
+
+          <p class="disclaimer">
+            * Расчёт является приблизительным. AI-администратор обрабатывает пропущенные вызовы 
+            и звонки в нерабочее время. Реальные результаты зависят от специфики клиники.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="comparison-section">
+    <div class="container">
+      <div class="section-label">
+        <h2>Живой администратор vs AI</h2>
+      </div>
+      <div class="comparison-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Параметр</th>
+              <th>👩 Живой администратор</th>
+              <th>🤖 AI-администратор</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Доступность</td>
+              <td>8-10 часов в день</td>
+              <td>24/7, без выходных</td>
+            </tr>
+            <tr>
+              <td>Пропущенные звонки</td>
+              <td>20-40% (обед, занятость)</td>
+              <td>0% — отвечает на все</td>
+            </tr>
+            <tr>
+              <td>Скорость ответа</td>
+              <td>Зависит от загрузки</td>
+              <td>Мгновенно, 1 секунда</td>
+            </tr>
+            <tr>
+              <td>Одновременные звонки</td>
+              <td>Только 1</td>
+              <td>Неограниченно</td>
+            </tr>
+            <tr>
+              <td>Больничные / отпуск</td>
+              <td>Нужна подмена</td>
+              <td>Не болеет, не устаёт</td>
+            </tr>
+            <tr>
+              <td>Обучение</td>
+              <td>2-4 недели</td>
+              <td>Настройка за 1 день</td>
+            </tr>
+            <tr>
+              <td>Зарплата</td>
+              <td id="comp-salary">45 000 ₽ / мес</td>
+              <td>от 15 000 ₽ / мес</td>
+            </tr>
+            <tr>
+              <td>Текучка кадров</td>
+              <td>Высокая</td>
+              <td>Не увольняется</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <div class="container">
+      <div class="cta-card">
+          <h2>Подключите AI-администратора</h2>
+          <p>Напишите нашему боту в Telegram — покажем, как AI будет работать именно для вашей клиники. Без обязательств.</p>
+          <a href="https://t.me/YOUR_BOT_USERNAME" target="_blank" rel="noopener" class="cta-btn" style="display:inline-flex;align-items:center;gap:0.6rem;text-decoration:none;padding:1rem 2.5rem;font-size:1.05rem;margin-top:0.5rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#07080b"><path d="M11.944 0A12 12 0 1 0 24 12.056A12.013 12.013 0 0 0 11.944 0Zm5.654 8.22l-1.736 8.19c-.13.588-.475.73-.964.455l-2.664-1.963-1.286 1.238a.67.67 0 0 1-.535.261l.191-2.716 4.94-4.463c.215-.191-.047-.297-.332-.106l-6.107 3.846-2.632-.822c-.572-.179-.583-.572.12-.847l10.29-3.966c.476-.172.893.106.738.847l-.023.046Z"/></svg>
+            Написать в Telegram
+          </a>
+          <p class="cta-note">Бесплатная демонстрация · Ответим за 5 минут</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 AI-Администратор для стоматологий</p>
+    </div>
+  </footer>
+
+  <script>
+    // ===== CALCULATOR =====
+    const els = {
+      calls: document.getElementById('calls'),
+      missed: document.getElementById('missed'),
+      conversion: document.getElementById('conversion'),
+      avgcheck: document.getElementById('avgcheck'),
+      salary: document.getElementById('salary'),
+      workdays: document.getElementById('workdays'),
+
+      callsVal: document.getElementById('calls-value'),
+      missedVal: document.getElementById('missed-value'),
+      conversionVal: document.getElementById('conversion-value'),
+      avgcheckVal: document.getElementById('avgcheck-value'),
+      salaryVal: document.getElementById('salary-value'),
+      workdaysVal: document.getElementById('workdays-value'),
+
+      resMissed: document.getElementById('res-missed'),
+      resLostAppt: document.getElementById('res-lost-appointments'),
+      resLoss: document.getElementById('res-loss'),
+      resLossYear: document.getElementById('res-loss-year'),
+      resAiCalls: document.getElementById('res-ai-calls'),
+      resAiAppt: document.getElementById('res-ai-appointments'),
+      resSalarySave: document.getElementById('res-salary-save'),
+      resProfit: document.getElementById('res-profit'),
+      resProfitYear: document.getElementById('res-profit-year'),
+      compSalary: document.getElementById('comp-salary'),
+    };
+
+    function fmt(n) {
+      return Math.abs(Math.round(n)).toLocaleString('ru-RU') + ' ₽';
+    }
+    function fmtNum(n) {
+      return Math.round(n).toLocaleString('ru-RU');
+    }
+
+    function calculate() {
+      const callsDay = +els.calls.value;
+      const missedPct = +els.missed.value / 100;
+      const convPct = +els.conversion.value / 100;
+      const avgcheck = +els.avgcheck.value;
+      const salary = +els.salary.value;
+      const workdays = +els.workdays.value;
+
+      // Update displayed values
+      els.callsVal.textContent = callsDay;
+      els.missedVal.textContent = Math.round(missedPct * 100) + '%';
+      els.conversionVal.textContent = Math.round(convPct * 100) + '%';
+      els.avgcheckVal.textContent = fmtNum(avgcheck).replace(' ₽', '');
+      els.salaryVal.textContent = fmtNum(salary).replace(' ₽', '');
+      els.workdaysVal.textContent = workdays;
+
+      // Calculations
+      const missedPerMonth = Math.round(callsDay * missedPct * workdays);
+      const lostAppointments = Math.round(missedPerMonth * convPct);
+      const lossPerMonth = lostAppointments * avgcheck;
+      const lossPerYear = lossPerMonth * 12;
+
+      // AI picks up all missed calls
+      const aiCalls = missedPerMonth;
+      // AI converts a portion (slightly lower conversion since AI, ~85% of human rate)
+      const aiConvRate = convPct * 0.85;
+      const aiAppointments = Math.round(aiCalls * aiConvRate);
+      const aiRevenue = aiAppointments * avgcheck;
+
+      // Total benefit = recovered revenue + salary savings
+      const totalBenefit = aiRevenue + salary;
+      const totalBenefitYear = totalBenefit * 12;
+
+      // Update results
+      els.resMissed.textContent = fmtNum(missedPerMonth);
+      els.resLostAppt.textContent = fmtNum(lostAppointments);
+      els.resLoss.textContent = '−' + fmt(lossPerMonth);
+      els.resLossYear.textContent = '−' + fmt(lossPerYear) + ' в год';
+
+      els.resAiCalls.textContent = fmtNum(aiCalls);
+      els.resAiAppt.textContent = fmtNum(aiAppointments);
+      els.resSalarySave.textContent = fmt(salary);
+
+      els.resProfit.textContent = '+' + fmt(totalBenefit);
+      els.resProfitYear.textContent = '+' + fmt(totalBenefitYear) + ' / год';
+
+      // Update comparison table
+      els.compSalary.textContent = fmt(salary) + ' / мес';
+    }
+
+    // Attach listeners
+    ['calls', 'missed', 'conversion', 'avgcheck', 'salary', 'workdays'].forEach(id => {
+      els[id].addEventListener('input', calculate);
+    });
+
+    calculate();
+  </script>
+
+</body>
+</html>
